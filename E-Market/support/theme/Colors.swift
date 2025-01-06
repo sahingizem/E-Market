@@ -14,6 +14,7 @@ class Colors {
     static let primary2 = UIColor(named: "primary2")!
     static let secondary = UIColor(named: "secondary")!
     static let tertiary = UIColor(named: "tertiary")!
+    static let tertiary2 = UIColor(named: "tertiary2")!
 
     static let placeholder = UIColor(named: "placeholder")!
 

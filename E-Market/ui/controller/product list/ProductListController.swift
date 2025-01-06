@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ProductListController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class ProductListController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
 
     private var favoriteProducts = [Product]()
     
@@ -27,6 +27,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         setupUI()
         loadData()
         hideBackButton()
+        searchTextField.delegate = self
     }
 
     init() {
@@ -45,6 +46,8 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     }
 
     private func setupUI() {
+        searchTextField.returnKeyType = .done
+
         collectionView.backgroundColor = .white
 
         topView.translatesAutoresizingMaskIntoConstraints = false
