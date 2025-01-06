@@ -13,7 +13,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     private let collectionView: UICollectionView
     private let viewModel = ProductListViewModel()
     private let topView = UIView()
-    private let headerView = UIView()  // Yeni headerView tanımı
+    private let headerView = UIView()
     private let titleLabel = UILabel()
     private let searchTextField = UITextField()
     private let filtersLabel = UILabel()
@@ -54,7 +54,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         titleLabel.textColor = .white
         titleLabel.textAlignment = .left
 
-        headerView.translatesAutoresizingMaskIntoConstraints = false  // Yeni headerView ekleniyor
+        headerView.translatesAutoresizingMaskIntoConstraints = false  
         view.addSubview(headerView)
 
         headerView.addSubview(searchTextField)
@@ -158,8 +158,22 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
         if let product = viewModel.product(at: indexPath.row) {
             cell.configure(with: product)
-        }
+            cell.addToCartAction = { [weak self] in
+                       if let product = self?.viewModel.product(at: indexPath.row) {
+                           CartManager.shared.addItem(product)
+                           
+                           self?.updateProductQuantity(for: product, in: cell)
+                           self?.showCartItemAddedAlert(for: product)
+                       }
+                   }
+               }
         return cell
+    }
+    
+    private func updateProductQuantity(for product: Product, in cell: ProductCell) {
+        if var cartProduct = CartManager.shared.cartItems.first(where: { $0.product.id == product.id }) {
+            cartProduct.quantity += 1
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -171,5 +185,11 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.bounds.width - 42) / 2
         return CGSize(width: width, height: 302)
+    }
+    
+    private func showCartItemAddedAlert(for product: Product) {
+        let alert = UIAlertController(title: "Added to Cart", message: "\(product.name) has been added to your cart.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }

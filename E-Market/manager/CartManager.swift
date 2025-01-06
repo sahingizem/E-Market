@@ -10,12 +10,17 @@ import Foundation
 class CartManager {
     static let shared = CartManager()
     
-    private(set) var cartItems: [Product] = []
+    private(set) var cartItems: [ProductItem] = []
     
     private init() {}
     
     func addItem(_ product: Product) {
-        cartItems.append(product)
+        if let index = cartItems.firstIndex(where: { $0.product.id == product.id }) {
+            cartItems[index].quantity += 1
+        } else {
+            let newProductItem = ProductItem(product: product)
+            cartItems.append(newProductItem)
+        }
     }
     
     func clearCart() {
