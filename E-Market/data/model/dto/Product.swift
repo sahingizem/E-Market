@@ -19,3 +19,9 @@ struct Product: Codable {
     let createdAt: String
     
 }
+
+extension Product {
+    static var `default`: Product {
+        return Product(id: "", name: "", price: "", description: "", image: "", brand: "", model: "", createdAt: "")
+    }
+}

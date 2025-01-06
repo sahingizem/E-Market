@@ -20,6 +20,8 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     private let searchTextField = UITextField()
     private let filtersLabel = UILabel()
 
+    private var searchFilteredProducts : [Product] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -43,7 +45,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     }
 
     private func setupUI() {
-        view.backgroundColor = .white
+        collectionView.backgroundColor = .white
 
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = Colors.primary
@@ -66,13 +68,15 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
             string: "Search",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
         )
-        searchTextField.backgroundColor = .white
+        searchTextField.backgroundColor = .tertiary
         searchTextField.font = UIFont(name: "Verdana", size: 18)
         searchTextField.textColor = .systemGray
         searchTextField.borderStyle = .roundedRect
         searchTextField.leftView = UIImageView(image: UIImage(named: "Search"))
         searchTextField.leftViewMode = .always
         searchTextField.layer.cornerRadius = 8
+
+        searchTextField.addTarget(self, action: #selector(searchTextChanged), for: .editingChanged)
 
         headerView.addSubview(filtersLabel)
         filtersLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -92,6 +96,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
 
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
 
         NSLayoutConstraint.activate([
             topView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -139,51 +144,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
             navigationController?.pushViewController(filterController, animated: true)
         }
 
-    private func loadData() {
-        viewModel.fetchProducts { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self?.collectionView.reloadData()
-                case .failure(let error):
-                    print("Error loading products: \(error)")
-                }
-            }
-        }
-    }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numberOfProducts
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
-        if let product = viewModel.product(at: indexPath.row) {
-            cell.configure(with: product)
-            cell.addToCartAction = { [weak self] in
-                       if let product = self?.viewModel.product(at: indexPath.row) {
-                           CartManager.shared.addItem(product)
-                           
-                           self?.updateProductQuantity(for: product, in: cell)
-                           self?.showCartItemAddedAlert(for: product)
-                       }
-                   }
-            cell.favoriteAction = { [weak self] product in
-                           self?.toggleFavorite(for: product)
-                       }
-               }
-        return cell
-    }
-    private func toggleFavorite(for product: Product) {
-            if let index = favoriteProducts.firstIndex(where: { $0.id == product.id }) {
-                favoriteProducts.remove(at: index)
-            } else {
-                favoriteProducts.append(product)
-            }
-            
-            updateFavoritesInFavouritesController()
-        }
-    
     private func updateFavoritesInFavouritesController() {
           if let favouritesController = navigationController?.viewControllers.first(where: { $0 is FavouritesController }) as? FavouritesController {
               favouritesController.updateFavorites(with: favoriteProducts)
@@ -195,21 +156,67 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
             cartProduct.quantity += 1
         }
     }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let product = viewModel.product(at: indexPath.row) else { return }
-        let detailVC = ProductDetailController(product: product)
-        navigationController?.pushViewController(detailVC, animated: true)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.bounds.width - 42) / 2
-        return CGSize(width: width, height: 302)
-    }
+    
+    private func loadData() {
+           viewModel.fetchProducts { [weak self] result in
+               DispatchQueue.main.async {
+                   switch result {
+                   case .success:
+                       self?.collectionView.reloadData()
+                   case .failure(let error):
+                       print("Error loading products: \(error)")
+                   }
+               }
+           }
+       }
+    
+    
+    @objc private func searchTextChanged() {
+           let searchText = searchTextField.text?.lowercased() ?? ""
+           searchFilteredProducts = viewModel.searchProducts(with: searchText)
+           collectionView.reloadData()
+       }
+    
     
     private func showCartItemAddedAlert(for product: Product) {
         let alert = UIAlertController(title: "Added to Cart", message: "\(product.name) has been added to your cart.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+    
+    // collection view functions
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.filteredProductsCount
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           guard let product = viewModel.product(at: indexPath.row) else { return }
+           let detailVC = ProductDetailController(product: product)
+           navigationController?.pushViewController(detailVC, animated: true)
+       }
+    
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+          let width = (collectionView.bounds.width - 21) / 2
+          return CGSize(width: width, height: 302)
+      }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
+         let product = viewModel.product(at: indexPath.row)
+        cell.configure(with: product ?? Product.default)
+         cell.addToCartAction = { [weak self] in
+             self?.viewModel.addToCart(product: product ?? Product.default)
+             self?.showCartItemAddedAlert(for: product ?? Product.default)
+         }
+         cell.favoriteAction = { [weak self] product in
+             self?.viewModel.toggleFavorite(for: product)
+         }
+         return cell
+     }
+    
 }
