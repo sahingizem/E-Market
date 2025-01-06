@@ -11,7 +11,10 @@ import UIKit
 class ProductCell: UICollectionViewCell {
     
     var addToCartAction: (() -> Void)?
-
+    var favoriteAction: ((Product) -> Void)?
+    
+    private var product: Product?
+    
     private let productImageView = UIImageView()
     private let priceLabel = UILabel()
     private let titleLabel = UILabel()
@@ -22,12 +25,25 @@ class ProductCell: UICollectionViewCell {
         super.init(frame: frame)
         setupUI()
         addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+
     }
     
     @objc private func addToCartButtonTapped() {
             addToCartAction?()
         }
-    
+    @objc private func favoriteButtonTapped() {
+           favoriteButton.isSelected.toggle()
+           
+           if favoriteButton.isSelected {
+               favoriteButton.setImage(UIImage(named: "Star3"), for: .normal)
+           } else {
+               favoriteButton.setImage(UIImage(named: "Star2"), for: .normal)
+           }
+        if let product = product {
+                  favoriteAction?(product)
+              }
+       }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -98,6 +114,7 @@ class ProductCell: UICollectionViewCell {
     }
     
     func configure(with product: Product) {
+        self.product = product
         if let imageURL = URL(string: product.image) {
                   productImageView.loadImage(from: imageURL)
               } else {

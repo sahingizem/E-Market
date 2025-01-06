@@ -10,6 +10,8 @@ import UIKit
 
 class ProductListController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
+    private var favoriteProducts = [Product]()
+    
     private let collectionView: UICollectionView
     private let viewModel = ProductListViewModel()
     private let topView = UIView()
@@ -166,9 +168,27 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
                            self?.showCartItemAddedAlert(for: product)
                        }
                    }
+            cell.favoriteAction = { [weak self] product in
+                           self?.toggleFavorite(for: product)
+                       }
                }
         return cell
     }
+    private func toggleFavorite(for product: Product) {
+            if let index = favoriteProducts.firstIndex(where: { $0.id == product.id }) {
+                favoriteProducts.remove(at: index)
+            } else {
+                favoriteProducts.append(product)
+            }
+            
+            updateFavoritesInFavouritesController()
+        }
+    
+    private func updateFavoritesInFavouritesController() {
+          if let favouritesController = navigationController?.viewControllers.first(where: { $0 is FavouritesController }) as? FavouritesController {
+              favouritesController.updateFavorites(with: favoriteProducts)
+          }
+      }
     
     private func updateProductQuantity(for product: Product, in cell: ProductCell) {
         if var cartProduct = CartManager.shared.cartItems.first(where: { $0.product.id == product.id }) {
