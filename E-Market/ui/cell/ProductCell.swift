@@ -9,16 +9,24 @@ import Foundation
 import UIKit
 
 class ProductCell: UICollectionViewCell {
+    
+    var addToCartAction: (() -> Void)?
+
     private let productImageView = UIImageView()
     private let priceLabel = UILabel()
     private let titleLabel = UILabel()
     private let addToCartButton = UIButton()
     private let favoriteButton = UIButton()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
     }
+    
+    @objc private func addToCartButtonTapped() {
+            addToCartAction?()
+        }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,6 +52,7 @@ class ProductCell: UICollectionViewCell {
         addToCartButton.setTitle("Add to Cart", for: .normal)
         addToCartButton.titleLabel?.font = UIFont(name: "Verdana", size: 16)
         addToCartButton.backgroundColor = Colors.primary
+        addToCartButton.layer.cornerRadius = 4
         addSubview(addToCartButton)
         
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +65,10 @@ class ProductCell: UICollectionViewCell {
         layer.borderColor = Colors.secondary.cgColor
         layer.borderWidth = 1.0
         
+        layer.shadowColor = UIColor.tertiary.cgColor
+                layer.shadowOffset = CGSize(width: 0, height: 2)
+                layer.shadowOpacity = 0.2
+                layer.shadowRadius = 4
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),

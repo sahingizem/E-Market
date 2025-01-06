@@ -35,6 +35,6 @@ class TabBarController: UITabBarController {
         favourites.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "Favourites"), selectedImage: UIImage(named: "third_icon_selected"))
         account.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "Account"), selectedImage: UIImage(named: "fourth_icon_selected"))
         
-        self.viewControllers = [productList, cart, favourites, account]
+        self.viewControllers = [productListNav, cartNav, favouritesNav, accountNav]
     }
 }

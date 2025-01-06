@@ -36,6 +36,7 @@
 		FB3437292D2B2E45007392D5 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3437282D2B2E45007392D5 /* StringExtensions.swift */; };
 		FB34372B2D2B319B007392D5 /* ImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB34372A2D2B319B007392D5 /* ImageViewExtensions.swift */; };
 		FB34372E2D2B3C21007392D5 /* DefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB34372D2D2B3C21007392D5 /* DefaultsService.swift */; };
+		FB3437302D2C1EAB007392D5 /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB34372F2D2C1EAB007392D5 /* CartManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		FB3437282D2B2E45007392D5 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		FB34372A2D2B319B007392D5 /* ImageViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtensions.swift; sourceTree = "<group>"; };
 		FB34372D2D2B3C21007392D5 /* DefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsService.swift; sourceTree = "<group>"; };
+		FB34372F2D2C1EAB007392D5 /* CartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				FB3437012D2B0921007392D5 /* NetworkManager.swift */,
+				FB34372F2D2C1EAB007392D5 /* CartManager.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				FB3437232D2B1B89007392D5 /* FilterController.swift in Sources */,
 				FB3437292D2B2E45007392D5 /* StringExtensions.swift in Sources */,
 				FB3437262D2B2747007392D5 /* ProductCell.swift in Sources */,
+				FB3437302D2C1EAB007392D5 /* CartManager.swift in Sources */,
 				FB3436C62D2B079C007392D5 /* SceneDelegate.swift in Sources */,
 				FB3436FF2D2B087C007392D5 /* SplashController.swift in Sources */,
 				FB34371B2D2B0C88007392D5 /* AccountController.swift in Sources */,
