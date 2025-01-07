@@ -45,12 +45,25 @@ class CartController: UIViewController, UICollectionViewDataSource {
         collectionView.register(CartCell.self, forCellWithReuseIdentifier: "CartCell")
         print("Cart items: \(CartManager.shared.cartItems)")
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        
+        completeButton.addTarget(self, action: #selector(didPressCompleteButton), for: .touchUpInside)
+
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-                let width = UIScreen.main.bounds.width - 32 // 16px sol, 16px sağ boşluk
-                layout.itemSize = CGSize(width: width, height: 100) // Yüksekliği ihtiyaca göre ayarlayın
+                let width = UIScreen.main.bounds.width - 32
+                layout.itemSize = CGSize(width: width, height: 100)
             }
     }
     
+    @objc private func didPressCompleteButton() {
+        let alertController = UIAlertController(title: "Order Information", message: "We cannot place your order at the moment, but you will be able to place your desired order in the future. We are updating.", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        
+        alertController.addAction(okAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
@@ -121,6 +134,8 @@ class CartController: UIViewController, UICollectionViewDataSource {
             completeButton.widthAnchor.constraint(equalToConstant: 182),
             completeButton.heightAnchor.constraint(equalToConstant: 38)
         ])
+        
+        collectionView.backgroundColor = .white
 
     }
     
