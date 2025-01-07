@@ -40,6 +40,12 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         textField.resignFirstResponder()
+         return true
+     }
+    
 
     private func hideBackButton() {
         self.navigationItem.hidesBackButton = true
@@ -142,7 +148,6 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     }
 
     @objc private func selectFilterButtonTapped() {
-        print("pressed")
         let filterController = FilterController()
             navigationController?.pushViewController(filterController, animated: true)
         }
