@@ -27,6 +27,7 @@ class ProductListViewModel {
         NetworkManager.shared.fetchProducts { result in
             switch result {
             case .success(let products):
+                print (products.count)
                 self.products = products
                 self.filteredProducts = products
                 completion(.success(()))

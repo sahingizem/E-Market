@@ -170,7 +170,8 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
                DispatchQueue.main.async {
                    switch result {
                    case .success:
-                       self?.collectionView.reloadData()
+                       self?.searchFilteredProducts = self?.viewModel.products ?? []
+                                       self?.collectionView.reloadData()
                    case .failure(let error):
                        print("Error loading products: \(error)")
                    }
@@ -181,8 +182,14 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     
     @objc private func searchTextChanged() {
            let searchText = searchTextField.text?.lowercased() ?? ""
-           searchFilteredProducts = viewModel.searchProducts(with: searchText)
-           collectionView.reloadData()
+        if searchText.isEmpty {
+                searchFilteredProducts = viewModel.products
+        } else {
+            searchFilteredProducts = viewModel.products.filter { product in
+                return product.name.lowercased().contains(searchText)
+            }
+        }
+                     collectionView.reloadData()
        }
     
     
@@ -196,7 +203,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.filteredProductsCount
+        return searchFilteredProducts.count
     }
     
     
@@ -214,13 +221,16 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
-         let product = viewModel.product(at: indexPath.row)
-        cell.configure(with: product ?? Product.default)
-         cell.addToCartAction = { [weak self] in
-             self?.viewModel.addToCart(product: product ?? Product.default)
-             self?.showCartItemAddedAlert(for: product ?? Product.default)
-         }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
+           let product = searchFilteredProducts[indexPath.row]
+           
+           cell.configure(with: product)
+           
+           cell.addToCartAction = { [weak self] in
+               self?.viewModel.addToCart(product: product)
+               self?.showCartItemAddedAlert(for: product)
+           }
+        
          cell.favoriteAction = { [weak self] product in
              self?.viewModel.toggleFavorite(for: product)
          }
