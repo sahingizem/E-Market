@@ -116,6 +116,7 @@ class ProductCell: UICollectionViewCell {
     func configure(with product: Product) {
         self.product = product
         if let imageURL = URL(string: product.image) {
+            print(imageURL)
                   productImageView.loadImage(from: imageURL)
               } else {
                   productImageView.image = nil
