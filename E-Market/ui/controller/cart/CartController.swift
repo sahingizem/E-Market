@@ -52,6 +52,9 @@ class CartController: UIViewController, UICollectionViewDataSource {
                 let width = UIScreen.main.bounds.width - 32
                 layout.itemSize = CGSize(width: width, height: 100)
             }
+        
+        CartManager.shared.loadCartData()
+
     }
     
     @objc private func didPressCompleteButton() {
@@ -172,8 +175,9 @@ class CartController: UIViewController, UICollectionViewDataSource {
             let productItem = CartManager.shared.cartItems[indexPath.item]
             cell.configure(with: productItem)
             cell.quantityChanged = { [weak self] quantity in
-                      self?.updateTotalPrice()  
-                  }
+                       CartManager.shared.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
+                       self?.updateTotalPrice()
+                   }
                   
             return cell
         }

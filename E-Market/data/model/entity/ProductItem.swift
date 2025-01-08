@@ -8,7 +8,7 @@
 import Foundation
 import Foundation
 
-struct ProductItem {
+struct ProductItem : Codable {
     let product: Product
     var quantity: Int
     

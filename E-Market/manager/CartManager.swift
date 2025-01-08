@@ -10,9 +10,21 @@ import Foundation
 class CartManager {
     static let shared = CartManager()
     
-    private(set) var cartItems: [ProductItem] = []
+    var cartItems: [ProductItem] = [] {
+            didSet {
+                saveCartData()
+            }
+        }
     
-    private init() {}
+    private init() {
+        loadCartData()
+    }
+    
+    func updateCartItemQuantity(at index: Int, quantity: Int) {
+        guard index >= 0 && index < cartItems.count else { return }
+        cartItems[index].quantity = quantity
+        saveCartData()
+    }
     
     func addItem(_ product: Product) {
         if let index = cartItems.firstIndex(where: { $0.product.id == product.id }) {
@@ -25,5 +37,17 @@ class CartManager {
     
     func clearCart() {
         cartItems.removeAll()
+    }
+    
+     func saveCartData() {
+        let encodedData = try? JSONEncoder().encode(cartItems)
+        UserDefaults.standard.set(encodedData, forKey: "cartItems")
+    }
+    
+     func loadCartData() {
+        if let data = UserDefaults.standard.data(forKey: "cartItems"),
+           let decodedItems = try? JSONDecoder().decode([ProductItem].self, from: data) {
+            cartItems = decodedItems
+        }
     }
 }

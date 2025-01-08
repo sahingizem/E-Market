@@ -55,6 +55,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         return tableView
     }()
     
+    
     private let modelSearchTextField: UITextField = {
         let textField = UITextField()
         textField.returnKeyType = .done
@@ -104,6 +105,8 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         modelTableView.delegate = self
         
         fetchBrands()
+        self.tabBarController?.tabBar.isHidden = true
+
     }
     
     private func fetchBrands() {
@@ -121,7 +124,16 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
             }
         }
     }
-    
+    private let applyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Apply", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(applyButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     private func hideBackButton() {
         self.navigationItem.hidesBackButton = true
@@ -185,7 +197,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
             topView.topAnchor.constraint(equalTo: view.topAnchor),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topView.heightAnchor.constraint(equalToConstant: 100)
+            topView.heightAnchor.constraint(equalToConstant: 92)
         ])
         
         NSLayoutConstraint.activate([
@@ -209,28 +221,28 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         ])
         
         NSLayoutConstraint.activate([
-            sortByLabel.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 16),
+            sortByLabel.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 13),
             sortByLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
         ])
         
         for (index, button) in roundButtons.enumerated() {
             if index == 0 {
                 NSLayoutConstraint.activate([
-                    button.topAnchor.constraint(equalTo: sortByLabel.bottomAnchor, constant: 31),
+                    button.topAnchor.constraint(equalTo: sortByLabel.bottomAnchor, constant: 22),
                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 31)
                 ])
                 NSLayoutConstraint.activate([
                     buttonLabels[index].centerYAnchor.constraint(equalTo: button.centerYAnchor),
-                    buttonLabels[index].leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 9)
+                    buttonLabels[index].leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 6)
                 ])
             } else {
                 NSLayoutConstraint.activate([
-                    button.topAnchor.constraint(equalTo: roundButtons[index - 1].bottomAnchor, constant: 15),
+                    button.topAnchor.constraint(equalTo: roundButtons[index - 1].bottomAnchor, constant: 12),
                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 31)
                 ])
                 NSLayoutConstraint.activate([
                     buttonLabels[index].centerYAnchor.constraint(equalTo: button.centerYAnchor),
-                    buttonLabels[index].leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 9)
+                    buttonLabels[index].leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 6)
                 ])
             }
             
@@ -241,7 +253,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         view.addSubview(lineImageView)
         
         NSLayoutConstraint.activate([
-            lineImageView.topAnchor.constraint(equalTo: roundButtons.last!.bottomAnchor, constant: 33),
+            lineImageView.topAnchor.constraint(equalTo: roundButtons.last!.bottomAnchor, constant: 23),
             lineImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             lineImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             lineImageView.heightAnchor.constraint(equalToConstant: 1)
@@ -255,7 +267,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         view.addSubview(brandLabel)
         
         NSLayoutConstraint.activate([
-            brandLabel.topAnchor.constraint(equalTo: lineImageView.bottomAnchor, constant: 15),
+            brandLabel.topAnchor.constraint(equalTo: lineImageView.bottomAnchor, constant: 13),
             brandLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18)
         ])
         view.addSubview(searchTextField)
@@ -263,12 +275,12 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         
         NSLayoutConstraint.activate([
             
-            searchTextField.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: 24),
+            searchTextField.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: 21),
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
-            searchTextField.heightAnchor.constraint(equalToConstant: 40),
+            searchTextField.heightAnchor.constraint(equalToConstant: 34),
             
-            brandTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 16),
+            brandTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 14),
             brandTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             brandTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
             brandTableView.heightAnchor.constraint(equalToConstant: 90)
@@ -282,7 +294,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         view.addSubview(secondLineView)
         
         NSLayoutConstraint.activate([
-            secondLineView.topAnchor.constraint(equalTo: brandTableView.bottomAnchor, constant: 33),
+            secondLineView.topAnchor.constraint(equalTo: brandTableView.bottomAnchor, constant: 23),
             secondLineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             secondLineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             secondLineView.heightAnchor.constraint(equalToConstant: 1)
@@ -294,22 +306,22 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         view.addSubview(modelLabel)
         
         NSLayoutConstraint.activate([
-            modelLabel.topAnchor.constraint(equalTo: secondLineView.bottomAnchor, constant: 15),
+            modelLabel.topAnchor.constraint(equalTo: secondLineView.bottomAnchor, constant: 13),
             modelLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18)
         ])
         
         view.addSubview(modelSearchTextField)
         
         NSLayoutConstraint.activate([
-            modelSearchTextField.topAnchor.constraint(equalTo: modelLabel.bottomAnchor, constant: 24),
+            modelSearchTextField.topAnchor.constraint(equalTo: modelLabel.bottomAnchor, constant: 21),
             modelSearchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             modelSearchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
-            modelSearchTextField.heightAnchor.constraint(equalToConstant: 40)
+            modelSearchTextField.heightAnchor.constraint(equalToConstant: 34)
         ])
         
         view.addSubview(modelTableView)
         NSLayoutConstraint.activate([
-            modelTableView.topAnchor.constraint(equalTo: modelSearchTextField.bottomAnchor, constant: 16),
+            modelTableView.topAnchor.constraint(equalTo: modelSearchTextField.bottomAnchor, constant: 13),
             modelTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             modelTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
             modelTableView.heightAnchor.constraint(equalToConstant: 90),
@@ -321,15 +333,25 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         modelTableView.rowHeight = 30
         
         NSLayoutConstraint.activate([
-            modelTableView.topAnchor.constraint(equalTo: modelSearchTextField.bottomAnchor, constant: 16),
+            modelTableView.topAnchor.constraint(equalTo: modelSearchTextField.bottomAnchor, constant: 13),
             modelTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             modelTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
             modelTableView.heightAnchor.constraint(equalToConstant: 90)
         ])
         
+        view.addSubview(applyButton)
+
+        NSLayoutConstraint.activate([
+            applyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            applyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            applyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -14),
+            applyButton.heightAnchor.constraint(equalToConstant: 50) // You can adjust the height as needed
+        ])
         
     }
-    
+    @objc private func applyButtonTapped() {
+        print("Apply button tapped")
+    }
     
     @objc private func buttonTapped(_ sender: UIButton) {
            sender.isSelected.toggle()
