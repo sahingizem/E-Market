@@ -10,11 +10,11 @@ import Foundation
 class CoreDataManager {
     static let shared = CoreDataManager()
     
-    var cartItems: [ProductItem] = [] {
-            didSet {
-                saveCartData()
-            }
+    var cartItems: [CartItem] = [] {
+        didSet {
+            saveCartData()
         }
+    }
     
     private init() {
         loadCartData()
@@ -30,8 +30,8 @@ class CoreDataManager {
         if let index = cartItems.firstIndex(where: { $0.product.id == product.id }) {
             cartItems[index].quantity += 1
         } else {
-            let newProductItem = ProductItem(product: product)
-            cartItems.append(newProductItem)
+            let newCartItem = CartItem(product: product, quantity: 1)
+            cartItems.append(newCartItem)
         }
     }
     
@@ -39,15 +39,16 @@ class CoreDataManager {
         cartItems.removeAll()
     }
     
-     func saveCartData() {
-        let encodedData = try? JSONEncoder().encode(cartItems)
+    func saveCartData() {
+        let productItems = cartItems.map { $0.toProductItem() }
+        let encodedData = try? JSONEncoder().encode(productItems)
         UserDefaults.standard.set(encodedData, forKey: "cartItems")
     }
     
-     func loadCartData() {
+    func loadCartData() {
         if let data = UserDefaults.standard.data(forKey: "cartItems"),
            let decodedItems = try? JSONDecoder().decode([ProductItem].self, from: data) {
-            cartItems = decodedItems
+            cartItems = decodedItems.map { $0.toCartItem() }
         }
     }
     

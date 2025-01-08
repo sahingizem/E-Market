@@ -10,6 +10,7 @@ import UIKit
 
 class CartController: UIViewController, UICollectionViewDataSource {
     
+    private let viewModel = CartViewModel()
     
     private let topView = UIView()
     private let titleLabel = UILabel()
@@ -23,7 +24,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
     }()
     
     private let totalLabel = UILabel()
-      private let priceSumLabel = UILabel()
+    private let priceSumLabel = UILabel()
     
     private let completeButton: UIButton = {
         let button = UIButton()
@@ -36,10 +37,13 @@ class CartController: UIViewController, UICollectionViewDataSource {
         button.clipsToBounds = true
         return button
     }()
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.loadCartItems()
+        
         setupUI()
         collectionView.dataSource = self
         collectionView.register(CartCell.self, forCellWithReuseIdentifier: "CartCell")
@@ -47,15 +51,16 @@ class CartController: UIViewController, UICollectionViewDataSource {
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
         completeButton.addTarget(self, action: #selector(didPressCompleteButton), for: .touchUpInside)
-
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-                let width = UIScreen.main.bounds.width - 32
-                layout.itemSize = CGSize(width: width, height: 100)
-            }
         
-        CoreDataManager.shared.loadCartData()
-
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            let width = UIScreen.main.bounds.width - 32
+            layout.itemSize = CGSize(width: width, height: 100)
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCartUpdate), name: .cartUpdated, object: nil)
+        
     }
+    
     
     @objc private func didPressCompleteButton() {
         let alertController = UIAlertController(title: "Order Information", message: "We cannot place your order at the moment, but you will be able to place your desired order in the future. We are updating.", preferredStyle: .alert)
@@ -66,27 +71,23 @@ class CartController: UIViewController, UICollectionViewDataSource {
         
         present(alertController, animated: true, completion: nil)
     }
-
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.loadCartItems()
+
         collectionView.reloadData()
         updateTotalPrice()
-
+        
     }
     
-    private func updateTotalPrice() {
-        var totalPrice: Double = 0.0
-            for item in CoreDataManager.shared.cartItems {
-                if let price = Double(item.product.price) {
-                    totalPrice += price * Double(item.quantity)
-                }
-            }
-            priceSumLabel.text = "\(totalPrice) ₺"
-        }
     
     private func setupUI() {
-        view.backgroundColor = .white
         
+        view.backgroundColor = .white
+        collectionView.backgroundColor = .white
+
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = Colors.primary
         view.addSubview(topView)
@@ -102,19 +103,20 @@ class CartController: UIViewController, UICollectionViewDataSource {
         view.addSubview(collectionView)
         
         totalLabel.translatesAutoresizingMaskIntoConstraints = false
-                totalLabel.text = "Total: "
-                totalLabel.font = UIFont(name: "Verdana", size: 18)
+        totalLabel.text = "Total: "
+        totalLabel.font = UIFont(name: "Verdana", size: 18)
         totalLabel.textColor = Colors.primary
-                view.addSubview(totalLabel)
-                
-                priceSumLabel.translatesAutoresizingMaskIntoConstraints = false
-                priceSumLabel.text = "0.00 ₺"
-                priceSumLabel.font = UIFont(name: "Verdana-Bold", size: 18)
-                priceSumLabel.textColor = .black
-                priceSumLabel.textAlignment = .left
-                view.addSubview(priceSumLabel)
-                
+        view.addSubview(totalLabel)
         
+        priceSumLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceSumLabel.text = "0.00 ₺"
+        priceSumLabel.font = UIFont(name: "Verdana-Bold", size: 18)
+        priceSumLabel.textColor = .black
+        priceSumLabel.textAlignment = .left
+        view.addSubview(priceSumLabel)
+        
+        view.addSubview(completeButton)
+
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 51),
             titleLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 16),
@@ -126,23 +128,23 @@ class CartController: UIViewController, UICollectionViewDataSource {
             topView.topAnchor.constraint(equalTo: view.topAnchor),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topView.heightAnchor.constraint(equalToConstant: 100),
-            
+            topView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 16),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         NSLayoutConstraint.activate([
-              totalLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-              totalLabel.bottomAnchor.constraint(equalTo: priceSumLabel.topAnchor),
-              
-              priceSumLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-              priceSumLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -17)
-          ])
-        
-        view.addSubview(completeButton)
-
+            totalLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            totalLabel.bottomAnchor.constraint(equalTo: priceSumLabel.topAnchor),
+            
+            priceSumLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            priceSumLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -17)
+        ])
+                
         NSLayoutConstraint.activate([
             completeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             completeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -150,12 +152,22 @@ class CartController: UIViewController, UICollectionViewDataSource {
             completeButton.heightAnchor.constraint(equalToConstant: 38)
         ])
         
-        collectionView.backgroundColor = .white
-
+        
     }
     
+    @objc private func handleCartUpdate() {
+            collectionView.reloadData()
+            updateTotalPrice()
+        }
+    
+    private func updateTotalPrice() {
+        let totalPrice = viewModel.calculateTotalPrice()
+               priceSumLabel.text = "\(totalPrice) ₺"
+    }
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CoreDataManager.shared.cartItems.count
+        return viewModel.cartItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -167,24 +179,21 @@ class CartController: UIViewController, UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return CoreDataManager.shared.cartItems.count
-        }
-        
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartCell", for: indexPath) as! CartCell
-            let productItem = CoreDataManager.shared.cartItems[indexPath.item]
-            cell.configure(with: productItem)
-            cell.quantityChanged = { [weak self] quantity in
-                    if quantity == 0 {
-                        CoreDataManager.shared.removeCartItem(at: indexPath.item)
-                        self?.collectionView.deleteItems(at: [indexPath])
-                    } else {
-                        CoreDataManager.shared.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
-                    }
-                    self?.updateTotalPrice()
-
-                }
-                  
-            return cell
-        }
+        return CoreDataManager.shared.cartItems.count
     }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartCell", for: indexPath) as! CartCell
+           let cartItem = viewModel.cartItems[indexPath.item]
+           cell.configure(with: cartItem)
+           cell.quantityChanged = { [weak self] quantity in
+               if quantity == 0 {
+                   self?.viewModel.removeCartItem(at: indexPath.item)
+               } else {
+                   self?.viewModel.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
+               }
+               self?.updateTotalPrice()
+           }
+           return cell
+       }
+}

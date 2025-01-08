@@ -94,28 +94,26 @@ class CartCell: UICollectionViewCell {
     }
 
 
-    func configure(with product: ProductItem) {
-        productLabel.text = product.product.name
-        priceLabel.text = "$\(product.product.price)"
-        itemNumberLabel.text = "\(product.quantity)"
+    func configure(with cartItem: CartItem) {
+        productLabel.text = cartItem.product.name
+        priceLabel.text = "$\(cartItem.product.price)"
+        itemNumberLabel.text = "\(cartItem.quantity)"
     }
     
     @objc private func decreaseItemNumber() {
-           if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 0 {
-             //  itemNumberLabel.text = "\(currentValue - 1)"
-               let newValue = currentValue - 1
-               itemNumberLabel.text = "\(newValue)"
-               quantityChanged?(currentValue)
-
-           }
-       }
-
-       @objc private func increaseItemNumber() {
-           if let currentValue = Int(itemNumberLabel.text ?? "0") {
-               itemNumberLabel.text = "\(currentValue + 1)"
-               quantityChanged?(currentValue)
-           }
-       }
+          if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 0 {
+              let newValue = currentValue - 1
+              itemNumberLabel.text = "\(newValue)"
+              quantityChanged?(newValue)
+          }
+      }
+    @objc private func increaseItemNumber() {
+        if let currentValue = Int(itemNumberLabel.text ?? "0") {
+            let newValue = currentValue + 1
+            itemNumberLabel.text = "\(newValue)"
+            quantityChanged?(newValue)
+        }
+    }
    }
 
 

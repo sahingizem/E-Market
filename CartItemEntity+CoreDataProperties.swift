@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-extension CartItemEntity {
+public extension CartItemEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CartItemEntity> {
         return NSFetchRequest<CartItemEntity>(entityName: "CartItemEntity")
