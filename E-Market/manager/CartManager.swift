@@ -50,4 +50,10 @@ class CartManager {
             cartItems = decodedItems
         }
     }
+    
+    func removeCartItem(at index: Int) {
+        if index >= 0 && index < cartItems.count {
+            cartItems.remove(at: index)
+        }
+    }
 }

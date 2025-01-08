@@ -127,11 +127,13 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
     private let applyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Apply", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Verdana", size: 14)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 8
-        button.addTarget(self, action: #selector(applyButtonTapped), for: .touchUpInside)
+        button.addTarget(FilterController.self, action: #selector(applyButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -228,7 +230,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         for (index, button) in roundButtons.enumerated() {
             if index == 0 {
                 NSLayoutConstraint.activate([
-                    button.topAnchor.constraint(equalTo: sortByLabel.bottomAnchor, constant: 22),
+                    button.topAnchor.constraint(equalTo: sortByLabel.bottomAnchor, constant: 16),
                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 31)
                 ])
                 NSLayoutConstraint.activate([
@@ -275,7 +277,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         
         NSLayoutConstraint.activate([
             
-            searchTextField.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: 21),
+            searchTextField.topAnchor.constraint(equalTo: brandLabel.bottomAnchor, constant: 17),
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
             searchTextField.heightAnchor.constraint(equalToConstant: 34),
@@ -313,7 +315,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         view.addSubview(modelSearchTextField)
         
         NSLayoutConstraint.activate([
-            modelSearchTextField.topAnchor.constraint(equalTo: modelLabel.bottomAnchor, constant: 21),
+            modelSearchTextField.topAnchor.constraint(equalTo: modelLabel.bottomAnchor, constant: 17),
             modelSearchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             modelSearchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
             modelSearchTextField.heightAnchor.constraint(equalToConstant: 34)
@@ -344,7 +346,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         NSLayoutConstraint.activate([
             applyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             applyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            applyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -14),
+            applyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             applyButton.heightAnchor.constraint(equalToConstant: 50) // You can adjust the height as needed
         ])
         

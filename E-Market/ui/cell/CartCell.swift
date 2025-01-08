@@ -101,8 +101,10 @@ class CartCell: UICollectionViewCell {
     }
     
     @objc private func decreaseItemNumber() {
-           if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 1 {
-               itemNumberLabel.text = "\(currentValue - 1)"
+           if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 0 {
+             //  itemNumberLabel.text = "\(currentValue - 1)"
+               let newValue = currentValue - 1
+               itemNumberLabel.text = "\(newValue)"
                quantityChanged?(currentValue)
 
            }

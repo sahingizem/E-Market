@@ -175,9 +175,15 @@ class CartController: UIViewController, UICollectionViewDataSource {
             let productItem = CartManager.shared.cartItems[indexPath.item]
             cell.configure(with: productItem)
             cell.quantityChanged = { [weak self] quantity in
-                       CartManager.shared.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
-                       self?.updateTotalPrice()
-                   }
+                    if quantity == 0 {
+                        CartManager.shared.removeCartItem(at: indexPath.item)
+                        self?.collectionView.deleteItems(at: [indexPath])
+                    } else {
+                        CartManager.shared.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
+                    }
+                    self?.updateTotalPrice()
+
+                }
                   
             return cell
         }

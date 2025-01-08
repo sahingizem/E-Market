@@ -149,7 +149,8 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
 
     @objc private func selectFilterButtonTapped() {
         let filterController = FilterController()
-            navigationController?.pushViewController(filterController, animated: true)
+        filterController.modalPresentationStyle = .overFullScreen 
+            present(filterController, animated: true, completion: nil)
         }
 
 
