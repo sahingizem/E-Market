@@ -149,7 +149,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
 
     @objc private func selectFilterButtonTapped() {
         let filterController = FilterController()
-        filterController.modalPresentationStyle = .overFullScreen 
+        filterController.modalPresentationStyle = .overFullScreen
             present(filterController, animated: true, completion: nil)
         }
 
@@ -161,7 +161,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
       }
     
     private func updateProductQuantity(for product: Product, in cell: ProductCell) {
-        if var cartProduct = CartManager.shared.cartItems.first(where: { $0.product.id == product.id }) {
+        if var cartProduct = CoreDataManager.shared.cartItems.first(where: { $0.product.id == product.id }) {
             cartProduct.quantity += 1
         }
     }

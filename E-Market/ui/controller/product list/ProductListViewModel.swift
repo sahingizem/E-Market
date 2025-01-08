@@ -48,7 +48,7 @@ class ProductListViewModel {
     }
     
     func addToCart(product: Product) {
-        CartManager.shared.addItem(product)
+        CoreDataManager.shared.addItem(product)
     }
     
     func toggleFavorite(for product: Product) {

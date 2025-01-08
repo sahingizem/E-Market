@@ -51,7 +51,7 @@ class FilterViewModel {
     }
     
     func addToCart(product: Product) {
-        CartManager.shared.addItem(product)
+        CoreDataManager.shared.addItem(product)
     }  
     
     

@@ -43,7 +43,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
         setupUI()
         collectionView.dataSource = self
         collectionView.register(CartCell.self, forCellWithReuseIdentifier: "CartCell")
-        print("Cart items: \(CartManager.shared.cartItems)")
+        print("Cart items: \(CoreDataManager.shared.cartItems)")
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
         completeButton.addTarget(self, action: #selector(didPressCompleteButton), for: .touchUpInside)
@@ -53,7 +53,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
                 layout.itemSize = CGSize(width: width, height: 100)
             }
         
-        CartManager.shared.loadCartData()
+        CoreDataManager.shared.loadCartData()
 
     }
     
@@ -76,7 +76,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
     
     private func updateTotalPrice() {
         var totalPrice: Double = 0.0
-            for item in CartManager.shared.cartItems {
+            for item in CoreDataManager.shared.cartItems {
                 if let price = Double(item.product.price) {
                     totalPrice += price * Double(item.quantity)
                 }
@@ -155,31 +155,31 @@ class CartController: UIViewController, UICollectionViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CartManager.shared.cartItems.count
+        return CoreDataManager.shared.cartItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CartItemCell", for: indexPath)
-        let productItem = CartManager.shared.cartItems[indexPath.row]
+        let productItem = CoreDataManager.shared.cartItems[indexPath.row]
         cell.textLabel?.text = productItem.product.name
         return cell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return CartManager.shared.cartItems.count
+            return CoreDataManager.shared.cartItems.count
         }
         
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartCell", for: indexPath) as! CartCell
-            let productItem = CartManager.shared.cartItems[indexPath.item]
+            let productItem = CoreDataManager.shared.cartItems[indexPath.item]
             cell.configure(with: productItem)
             cell.quantityChanged = { [weak self] quantity in
                     if quantity == 0 {
-                        CartManager.shared.removeCartItem(at: indexPath.item)
+                        CoreDataManager.shared.removeCartItem(at: indexPath.item)
                         self?.collectionView.deleteItems(at: [indexPath])
                     } else {
-                        CartManager.shared.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
+                        CoreDataManager.shared.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
                     }
                     self?.updateTotalPrice()
 

@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:CartItemEntity+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:CartItemEntity+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:E-Market.xcodeproj">
    </FileRef>
    <FileRef

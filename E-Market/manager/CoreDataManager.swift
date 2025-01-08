@@ -7,8 +7,8 @@
 
 import Foundation
 
-class CartManager {
-    static let shared = CartManager()
+class CoreDataManager {
+    static let shared = CoreDataManager()
     
     var cartItems: [ProductItem] = [] {
             didSet {
