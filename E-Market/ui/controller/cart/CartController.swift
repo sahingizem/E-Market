@@ -67,7 +67,19 @@ class CartController: UIViewController, UICollectionViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
+        updateTotalPrice()
+
     }
+    
+    private func updateTotalPrice() {
+        var totalPrice: Double = 0.0
+            for item in CartManager.shared.cartItems {
+                if let price = Double(item.product.price) {
+                    totalPrice += price * Double(item.quantity)
+                }
+            }
+            priceSumLabel.text = "\(totalPrice) ₺"
+        }
     
     private func setupUI() {
         view.backgroundColor = .white
@@ -159,6 +171,10 @@ class CartController: UIViewController, UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartCell", for: indexPath) as! CartCell
             let productItem = CartManager.shared.cartItems[indexPath.item]
             cell.configure(with: productItem)
+            cell.quantityChanged = { [weak self] quantity in
+                      self?.updateTotalPrice()  
+                  }
+                  
             return cell
         }
     }

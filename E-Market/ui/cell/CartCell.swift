@@ -16,6 +16,8 @@ class CartCell: UICollectionViewCell {
     private let plusButton = UIButton()
     private let itemNumberLabel = UILabel()
     
+    var quantityChanged: ((Int) -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -29,15 +31,15 @@ class CartCell: UICollectionViewCell {
         productLabel.translatesAutoresizingMaskIntoConstraints = false
         productLabel.font = UIFont(name: "Verdana", size: 16)
         productLabel.textColor = .darkGray
-        productLabel.numberOfLines = 0 // Multiple lines if needed
-        productLabel.lineBreakMode = .byWordWrapping // Allow wrapping
+        productLabel.numberOfLines = 0
+        productLabel.lineBreakMode = .byWordWrapping
         contentView.addSubview(productLabel)
         
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.font = UIFont(name: "Verdana", size: 16)
         priceLabel.textColor = .primary
-        priceLabel.numberOfLines = 0 // Multiple lines if needed
-        priceLabel.lineBreakMode = .byWordWrapping // Allow wrapping
+        priceLabel.numberOfLines = 0
+        priceLabel.lineBreakMode = .byWordWrapping
         contentView.addSubview(priceLabel)
         
         NSLayoutConstraint.activate([
@@ -58,7 +60,6 @@ class CartCell: UICollectionViewCell {
         minusButton.addTarget(self, action: #selector(decreaseItemNumber), for: .touchUpInside)
         contentView.addSubview(minusButton)
         
-        // Configure item number label
         itemNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         itemNumberLabel.font = UIFont(name: "Verdana", size: 16)
         itemNumberLabel.textColor = .white
@@ -67,7 +68,6 @@ class CartCell: UICollectionViewCell {
         itemNumberLabel.text = "1"
         contentView.addSubview(itemNumberLabel)
         
-        // Configure plus button
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         plusButton.setTitle("+", for: .normal)
         plusButton.setTitleColor(.black, for: .normal)
@@ -75,20 +75,16 @@ class CartCell: UICollectionViewCell {
         plusButton.addTarget(self, action: #selector(increaseItemNumber), for: .touchUpInside)
         contentView.addSubview(plusButton)
         
-        // Set layout constraints
         NSLayoutConstraint.activate([
-            // Minus button constraints
             minusButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             minusButton.widthAnchor.constraint(equalToConstant: 50),
             minusButton.heightAnchor.constraint(equalToConstant: 50),
             
-            // Item number label constraints
             itemNumberLabel.leadingAnchor.constraint(equalTo: minusButton.trailingAnchor, constant: 0),
             itemNumberLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             itemNumberLabel.widthAnchor.constraint(equalToConstant: 50),
             itemNumberLabel.heightAnchor.constraint(equalToConstant: 50),
             
-            // Plus button constraints
             plusButton.leadingAnchor.constraint(equalTo: itemNumberLabel.trailingAnchor, constant: 0),
             plusButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             plusButton.widthAnchor.constraint(equalToConstant: 50),
@@ -107,12 +103,15 @@ class CartCell: UICollectionViewCell {
     @objc private func decreaseItemNumber() {
            if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 1 {
                itemNumberLabel.text = "\(currentValue - 1)"
+               quantityChanged?(currentValue)
+
            }
        }
 
        @objc private func increaseItemNumber() {
            if let currentValue = Int(itemNumberLabel.text ?? "0") {
                itemNumberLabel.text = "\(currentValue + 1)"
+               quantityChanged?(currentValue)
            }
        }
    }
