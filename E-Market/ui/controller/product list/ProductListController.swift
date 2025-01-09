@@ -9,18 +9,24 @@ import Foundation
 import UIKit
 
 class ProductListController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
-
-    private var favoriteProducts = [Product]()
     
     private let collectionView: UICollectionView
     private let viewModel = ProductListViewModel()
+
+    private var favoriteProducts = [Product]()
+    
+    var sortOption: String?
+    var selectedBrand: String?
+    var selectedModel: String?
+    
     private let topView = UIView()
     private let headerView = UIView()
     private let titleLabel = UILabel()
     private let searchTextField = UITextField()
     private let filtersLabel = UILabel()
-
-    private var searchFilteredProducts : [Product] = []
+    
+   
+       
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +34,37 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         loadData()
         hideBackButton()
         searchTextField.delegate = self
+    }
+    
+    func applyFilters() {
+            
+        if let sortOption = sortOption {
+                sortProducts(by: sortOption)
+            }
+            
+        if let brand = selectedBrand {
+                filterProducts(by: brand)
+            }
+            
+        if let model = selectedModel {
+                filterProducts(by: model)
+            }
+            
+            reloadProductList()
+        }
+    
+    private func filterProducts(by criterion: String) {
+        viewModel.filterProducts(by: criterion)
+        collectionView.reloadData()
+    }
+    
+    private func sortProducts(by option: String) {
+        viewModel.sortProducts(by: option)
+        collectionView.reloadData()
+    }
+    
+    private func reloadProductList() {
+        collectionView.reloadData()
     }
     
     private func updateCartBadge() {
@@ -179,7 +216,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
                DispatchQueue.main.async {
                    switch result {
                    case .success:
-                       self?.searchFilteredProducts = self?.viewModel.products ?? []
+                       self?.viewModel.searchFilteredProducts = self?.viewModel.products ?? []
                                        self?.collectionView.reloadData()
                    case .failure(let error):
                        print("Error loading products: \(error)")
@@ -192,9 +229,9 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     @objc private func searchTextChanged() {
            let searchText = searchTextField.text?.lowercased() ?? ""
         if searchText.isEmpty {
-                searchFilteredProducts = viewModel.products
+            viewModel.searchFilteredProducts = viewModel.products
         } else {
-            searchFilteredProducts = viewModel.products.filter { product in
+            viewModel.searchFilteredProducts = viewModel.products.filter { product in
                 return product.name.lowercased().contains(searchText)
             }
         }
@@ -208,11 +245,27 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         present(alert, animated: true, completion: nil)
     }
     
-    // collection view functions
+    
+    func addToFavorites(product: Product) {
+        if let index = favoriteProducts.firstIndex(where: { $0.id == product.id }) {
+            favoriteProducts.remove(at: index)
+        } else {
+            favoriteProducts.append(product)
+        }
+
+        updateFavoritesView()
+    }
+
+    private func updateFavoritesView() {
+        let favoritesController = FavouritesController()
+        favoritesController.updateFavorites(with: favoriteProducts)
+    }
     
     
+    // MARK: - CollectionView Delegate & DataSource
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchFilteredProducts.count
+        return viewModel.searchFilteredProducts.count
     }
     
     
@@ -220,6 +273,11 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
            guard let product = viewModel.product(at: indexPath.row) else { return }
            let detailVC = ProductDetailController(product: product)
            navigationController?.pushViewController(detailVC, animated: true)
+                    
+            let cell = collectionView.cellForItem(at: indexPath) as! ProductCell
+            cell.favoriteAction = { product in
+                self.addToFavorites(product: product)
+            }
        }
     
 
@@ -231,7 +289,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
-           let product = searchFilteredProducts[indexPath.row]
+        let product = viewModel.searchFilteredProducts[indexPath.row]
            
            cell.configure(with: product)
            
@@ -246,5 +304,5 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
          }
          return cell
      }
-    
+   
 }

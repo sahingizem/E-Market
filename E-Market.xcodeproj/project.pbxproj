@@ -17,6 +17,8 @@
 		FB26EC3E2D2F1FFF005D120E /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB26EC3D2D2F1FFF005D120E /* CartItem.swift */; };
 		FB26EC472D2F2B0A005D120E /* CartItemModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB26EC452D2F2B0A005D120E /* CartItemModel.xcdatamodeld */; };
 		FB26EC492D2F2EE1005D120E /* NotificationCenterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB26EC482D2F2EE1005D120E /* NotificationCenterExtensions.swift */; };
+		FB26EC592D2FF83A005D120E /* ProductListControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB26EC582D2FF83A005D120E /* ProductListControllerTests.swift */; };
+		FB26EC602D2FF906005D120E /* FavouritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB26EC5F2D2FF906005D120E /* FavouritesViewModel.swift */; };
 		FB3436C42D2B079C007392D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3436C32D2B079C007392D5 /* AppDelegate.swift */; };
 		FB3436C62D2B079C007392D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3436C52D2B079C007392D5 /* SceneDelegate.swift */; };
 		FB3436C82D2B079C007392D5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3436C72D2B079C007392D5 /* ViewController.swift */; };
@@ -52,6 +54,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FB26EC5A2D2FF83A005D120E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB3436B82D2B079C007392D5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB3436BF2D2B079C007392D5;
+			remoteInfo = "E-Market";
+		};
 		FB3436D72D2B079D007392D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FB3436B82D2B079C007392D5 /* Project object */;
@@ -85,6 +94,9 @@
 		FB26EC3D2D2F1FFF005D120E /* CartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItem.swift; sourceTree = "<group>"; };
 		FB26EC462D2F2B0A005D120E /* CartItemModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CartItemModel.xcdatamodel; sourceTree = "<group>"; };
 		FB26EC482D2F2EE1005D120E /* NotificationCenterExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterExtensions.swift; sourceTree = "<group>"; };
+		FB26EC562D2FF83A005D120E /* ProductListControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProductListControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB26EC582D2FF83A005D120E /* ProductListControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListControllerTests.swift; sourceTree = "<group>"; };
+		FB26EC5F2D2FF906005D120E /* FavouritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesViewModel.swift; sourceTree = "<group>"; };
 		FB3436C02D2B079C007392D5 /* E-Market.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "E-Market.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB3436C32D2B079C007392D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FB3436C52D2B079C007392D5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +136,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FB26EC532D2FF83A005D120E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FB3436BD2D2B079C007392D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -161,12 +180,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FB26EC572D2FF83A005D120E /* ProductListControllerTests */ = {
+			isa = PBXGroup;
+			children = (
+				FB26EC582D2FF83A005D120E /* ProductListControllerTests.swift */,
+			);
+			path = ProductListControllerTests;
+			sourceTree = "<group>";
+		};
 		FB3436B72D2B079C007392D5 = {
 			isa = PBXGroup;
 			children = (
 				FB3436C22D2B079C007392D5 /* E-Market */,
 				FB3436D92D2B079D007392D5 /* E-MarketTests */,
 				FB3436E32D2B079D007392D5 /* E-MarketUITests */,
+				FB26EC572D2FF83A005D120E /* ProductListControllerTests */,
 				FB3436C12D2B079C007392D5 /* Products */,
 				FE5208C4DA4BD7B2DE1A9516 /* Pods */,
 				88B38938968A8E6545E9A4A4 /* Frameworks */,
@@ -179,6 +207,7 @@
 				FB3436C02D2B079C007392D5 /* E-Market.app */,
 				FB3436D62D2B079D007392D5 /* E-MarketTests.xctest */,
 				FB3436E02D2B079D007392D5 /* E-MarketUITests.xctest */,
+				FB26EC562D2FF83A005D120E /* ProductListControllerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -336,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				FB34371C2D2B0C92007392D5 /* FavouritesController.swift */,
+				FB26EC5F2D2FF906005D120E /* FavouritesViewModel.swift */,
 			);
 			path = favourites;
 			sourceTree = "<group>";
@@ -436,6 +466,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		FB26EC552D2FF83A005D120E /* ProductListControllerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB26EC5C2D2FF83A005D120E /* Build configuration list for PBXNativeTarget "ProductListControllerTests" */;
+			buildPhases = (
+				FB26EC522D2FF83A005D120E /* Sources */,
+				FB26EC532D2FF83A005D120E /* Frameworks */,
+				FB26EC542D2FF83A005D120E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FB26EC5B2D2FF83A005D120E /* PBXTargetDependency */,
+			);
+			name = ProductListControllerTests;
+			productName = ProductListControllerTests;
+			productReference = FB26EC562D2FF83A005D120E /* ProductListControllerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		FB3436BF2D2B079C007392D5 /* E-Market */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FB3436EA2D2B079D007392D5 /* Build configuration list for PBXNativeTarget "E-Market" */;
@@ -504,6 +552,10 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					FB26EC552D2FF83A005D120E = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = FB3436BF2D2B079C007392D5;
+					};
 					FB3436BF2D2B079C007392D5 = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -533,11 +585,19 @@
 				FB3436BF2D2B079C007392D5 /* E-Market */,
 				FB3436D52D2B079D007392D5 /* E-MarketTests */,
 				FB3436DF2D2B079D007392D5 /* E-MarketUITests */,
+				FB26EC552D2FF83A005D120E /* ProductListControllerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		FB26EC542D2FF83A005D120E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FB3436BE2D2B079C007392D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -671,6 +731,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FB26EC522D2FF83A005D120E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB26EC592D2FF83A005D120E /* ProductListControllerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FB3436BC2D2B079C007392D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -680,6 +748,7 @@
 				FB26EC492D2F2EE1005D120E /* NotificationCenterExtensions.swift in Sources */,
 				FB26EC352D2DDED4005D120E /* FilterViewModel.swift in Sources */,
 				FB26EC3C2D2ED1C6005D120E /* ProductDetailViewModel.swift in Sources */,
+				FB26EC602D2FF906005D120E /* FavouritesViewModel.swift in Sources */,
 				FB3437372D2C4E5B007392D5 /* ProductItem.swift in Sources */,
 				FB34371D2D2B0C92007392D5 /* FavouritesController.swift in Sources */,
 				FB3437192D2B0C77007392D5 /* CartController.swift in Sources */,
@@ -728,6 +797,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FB26EC5B2D2FF83A005D120E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB3436BF2D2B079C007392D5 /* E-Market */;
+			targetProxy = FB26EC5A2D2FF83A005D120E /* PBXContainerItemProxy */;
+		};
 		FB3436D82D2B079D007392D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FB3436BF2D2B079C007392D5 /* E-Market */;
@@ -760,6 +834,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		FB26EC5D2D2FF83A005D120E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UD489TMS66;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gizem.ProductListControllerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/E-Market.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/E-Market";
+			};
+			name = Debug;
+		};
+		FB26EC5E2D2FF83A005D120E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UD489TMS66;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gizem.ProductListControllerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/E-Market.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/E-Market";
+			};
+			name = Release;
+		};
 		FB3436E82D2B079D007392D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1020,6 +1132,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		FB26EC5C2D2FF83A005D120E /* Build configuration list for PBXNativeTarget "ProductListControllerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB26EC5D2D2FF83A005D120E /* Debug */,
+				FB26EC5E2D2FF83A005D120E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FB3436BB2D2B079C007392D5 /* Build configuration list for PBXProject "E-Market" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

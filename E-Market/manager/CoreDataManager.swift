@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
@@ -41,6 +42,8 @@ class CoreDataManager {
     }
     
     func saveCartData() {
+        let context = persistentContainer.viewContext
+
         let productItems = cartItems.map { $0.toProductItem() }
         let encodedData = try? JSONEncoder().encode(productItems)
         UserDefaults.standard.set(encodedData, forKey: "cartItems")
@@ -58,4 +61,15 @@ class CoreDataManager {
             cartItems.remove(at: index)
         }
     }
+    
+    private lazy var persistentContainer: NSPersistentContainer = {
+            let container = NSPersistentContainer(name: "E_Market")
+            container.loadPersistentStores { description, error in
+                if let error = error as NSError? {
+                    fatalError("Unresolved error \(error), \(error.userInfo)")
+                }
+            }
+            return container
+        }()
+    
 }

@@ -14,30 +14,30 @@ class FavouritesController: UIViewController, UICollectionViewDataSource, UIColl
     private let titleLabel = UILabel()
     private let infoLabel = UILabel()
 
-    private var favoriteProducts: [Product] = []
-    
+    private var viewModel = FavouritesViewModel()
+
     private var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupUI()
+        viewModel.onFavoritesUpdated = { [weak self] in
+                  self?.collectionView.reloadData()
+              }
     }
+    
     func updateFavorites(with products: [Product]) {
-          self.favoriteProducts = products
-        collectionView.reloadData()
-
+        viewModel.updateFavorites(with: products)
     }
     
    private func setupUI() {
         view.backgroundColor = .white
         
-        // Setup top view
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = Colors.primary
         view.addSubview(topView)
         
-        // Setup title label
         topView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont(name: "Verdana-Bold", size: 24)
@@ -45,7 +45,6 @@ class FavouritesController: UIViewController, UICollectionViewDataSource, UIColl
         titleLabel.textColor = .white
         titleLabel.textAlignment = .left
         
-        // Constraints for the top view and title label
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 51),
             titleLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 16),
@@ -90,11 +89,10 @@ class FavouritesController: UIViewController, UICollectionViewDataSource, UIColl
            infoLabel.textColor = .gray
            infoLabel.textAlignment = .center
            infoLabel.numberOfLines = 0
-           infoLabel.alpha = 0.7  // Slight transparency for aesthetic
+           infoLabel.alpha = 0.7
 
            view.addSubview(infoLabel)
 
-           // Centering info label in the middle of the screen
            NSLayoutConstraint.activate([
                infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                infoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -105,19 +103,19 @@ class FavouritesController: UIViewController, UICollectionViewDataSource, UIColl
        
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favoriteProducts.count
+        return viewModel.favoriteProducts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
-        let product = favoriteProducts[indexPath.row]
+        let product = viewModel.favoriteProducts[indexPath.row]
         cell.configure(with: product)
         return cell
     }
 
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Handle selection
+        //selection will be handled later
     }
 }
 

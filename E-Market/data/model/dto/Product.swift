@@ -17,7 +17,7 @@ struct Product: Codable {
     let brand: String
     let model: String
     let createdAt: String
-    let isFavourite: Bool?
+    var isFavourite: Bool?
 }
 
 func sampleProducts() -> [Product] {

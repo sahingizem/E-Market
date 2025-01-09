@@ -13,6 +13,10 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
     
     private var selectedRows: Set<Int> = []
     
+    var selectedSortOption: String?
+    var selectedBrand: String?
+    var selectedModel: String?
+    
     private let topView = UIView()
     private let closeButton = UIButton()
     private let filterLabel = UILabel()
@@ -133,7 +137,6 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 8
-        button.addTarget(FilterController.self, action: #selector(applyButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -347,12 +350,32 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
             applyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             applyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             applyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            applyButton.heightAnchor.constraint(equalToConstant: 50) // You can adjust the height as needed
+            applyButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+        applyButton.addTarget(self, action: #selector(applyButtonTapped), for: .touchUpInside)
+
         
     }
     @objc private func applyButtonTapped() {
-        print("Apply button tapped")
+        self.dismiss(animated: true, completion: {
+            let sortOption = self.selectedSortOption ?? "Old to new"
+            let brand = self.selectedBrand
+            let model = self.selectedModel
+                
+            self.navigateToProductList(sortOption: sortOption, brand: brand, model: model)
+              let productListController = ProductListController()
+              self.navigationController?.pushViewController(productListController, animated: true)
+          })
+    }
+    
+    func navigateToProductList(sortOption: String, brand: String?, model: String?) {
+        let productListController = ProductListController()
+        
+        productListController.sortOption = sortOption
+        productListController.selectedBrand = brand
+        productListController.selectedModel = model
+        
+        navigationController?.pushViewController(productListController, animated: true)
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
