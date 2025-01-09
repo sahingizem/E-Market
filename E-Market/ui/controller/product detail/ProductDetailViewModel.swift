@@ -20,6 +20,9 @@ class ProductDetailViewModel {
             DispatchQueue.main.async {
                 completion(success)
             }
+            if success {
+                NotificationCenter.default.post(name: .cartUpdated, object: nil)
+            }
         }
     }
 }

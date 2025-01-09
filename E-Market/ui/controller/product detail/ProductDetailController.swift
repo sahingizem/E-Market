@@ -59,6 +59,8 @@ class ProductDetailController: UIViewController {
             
             if success {
                 self.showCartItemAddedAlert(for: self.product)
+                NotificationCenter.default.post(name: .cartUpdated, object: nil)
+
             } else {
                 let alert = UIAlertController(title: "Error", message: "There was an issue adding the product to the cart.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
