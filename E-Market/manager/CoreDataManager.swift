@@ -26,13 +26,14 @@ class CoreDataManager {
         saveCartData()
     }
     
-    func addItem(_ product: Product) {
+    func addItem(_ product: Product) -> Bool {
         if let index = cartItems.firstIndex(where: { $0.product.id == product.id }) {
             cartItems[index].quantity += 1
         } else {
             let newCartItem = CartItem(product: product, quantity: 1)
             cartItems.append(newCartItem)
         }
+        return true
     }
     
     func clearCart() {

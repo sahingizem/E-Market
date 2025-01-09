@@ -1,25 +1,33 @@
+//
+//  ProductDetailController.swift
+//  E-Market
+//
+//  Created by gizem on 8.01.2025.
+//
+
 import Foundation
 import UIKit
 
 class ProductDetailController: UIViewController {
     
     private let product: Product
+    private let viewModel = ProductDetailViewModel()
     
     private let topView = UIView()
     private let titleLabel = UILabel()
     private let backButton = UIButton()
-
+    
     private let productImageView = UIImageView()
     private let productTitleLabel = UILabel()
     private let productDescriptionLabel = UILabel()
-    private let viewModel = ProductDetailViewModel()
-
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let priceLabel = UILabel()
     
-       private let priceValueLabel = UILabel()
-       private let addToCartButton = UIButton()
+    private let priceValueLabel = UILabel()
+    private let addToCartButton = UIButton()
+    
     init(product: Product) {
         self.product = product
         super.init(nibName: nil, bundle: nil)
@@ -35,7 +43,7 @@ class ProductDetailController: UIViewController {
         setupUI()
         hideBackButton()
         addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
-
+        
     }
     
     private func showCartItemAddedAlert(for product: Product) {
@@ -46,8 +54,17 @@ class ProductDetailController: UIViewController {
     
     @objc private func addToCartButtonTapped() {
         print("Product added to cart: \(product.name)")
-        self.viewModel.addToCart(product: product)
-        self.showCartItemAddedAlert(for: product)
+        viewModel.addToCart(product: product) { [weak self] success in
+              guard let self = self else { return }
+              
+              if success {
+                  self.showCartItemAddedAlert(for: self.product)
+              } else {
+                  let alert = UIAlertController(title: "Error", message: "There was an issue adding the product to the cart.", preferredStyle: .alert)
+                  alert.addAction(UIAlertAction(title: "OK", style: .default))
+                  self.present(alert, animated: true)
+              }
+          }
     }
     
     private func hideBackButton() {
@@ -55,6 +72,7 @@ class ProductDetailController: UIViewController {
     }
     
     private func setupUI() {
+        
         view.addSubview(topView)
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = Colors.primary
@@ -91,7 +109,6 @@ class ProductDetailController: UIViewController {
             titleLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -16),
         ])
         
-        // ScrollView setup
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = true
@@ -152,45 +169,45 @@ class ProductDetailController: UIViewController {
             productDescriptionLabel.topAnchor.constraint(equalTo: productTitleLabel.bottomAnchor, constant: 8),
             productDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             productDescriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-          //  productDescriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16) // Ensures scrollable content ends at the bottom
+            //  productDescriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16) // Ensures scrollable content ends at the bottom
         ])
         
         contentView.addSubview(priceLabel)
-                priceLabel.translatesAutoresizingMaskIntoConstraints = false
-                priceLabel.text = "Price:"
-                priceLabel.font = UIFont(name: "Verdana", size: 18)
-                priceLabel.textColor = Colors.primary
-
-                contentView.addSubview(priceValueLabel)
-                priceValueLabel.translatesAutoresizingMaskIntoConstraints = false
-                priceValueLabel.text = "\(product.price) ₺"
-                priceValueLabel.font = UIFont(name: "Verdana-Bold", size: 18)
-                priceValueLabel.textColor = .black
-
-                contentView.addSubview(addToCartButton)
-                addToCartButton.translatesAutoresizingMaskIntoConstraints = false
-                addToCartButton.setTitle("Add to Cart", for: .normal)
-                addToCartButton.titleLabel?.font = UIFont(name: "Verdana-Bold", size: 18)
-                addToCartButton.backgroundColor = Colors.primary
-                addToCartButton.setTitleColor(.white, for: .normal)
-                addToCartButton.layer.cornerRadius = 5
-                addToCartButton.clipsToBounds = true
-
-                NSLayoutConstraint.activate([
-                    priceLabel.topAnchor.constraint(equalTo: productDescriptionLabel.bottomAnchor, constant: 16),
-                    priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-
-                    priceValueLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 0),
-                    priceValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-
-                    addToCartButton.topAnchor.constraint(equalTo: productDescriptionLabel.bottomAnchor, constant: 16),
-                    addToCartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-                    addToCartButton.heightAnchor.constraint(equalToConstant: 44),
-                    addToCartButton.widthAnchor.constraint(equalToConstant: 170),
-
-                    priceValueLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-                ])
-            }
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceLabel.text = "Price:"
+        priceLabel.font = UIFont(name: "Verdana", size: 18)
+        priceLabel.textColor = Colors.primary
+        
+        contentView.addSubview(priceValueLabel)
+        priceValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceValueLabel.text = "\(product.price) ₺"
+        priceValueLabel.font = UIFont(name: "Verdana-Bold", size: 18)
+        priceValueLabel.textColor = .black
+        
+        contentView.addSubview(addToCartButton)
+        addToCartButton.translatesAutoresizingMaskIntoConstraints = false
+        addToCartButton.setTitle("Add to Cart", for: .normal)
+        addToCartButton.titleLabel?.font = UIFont(name: "Verdana-Bold", size: 18)
+        addToCartButton.backgroundColor = Colors.primary
+        addToCartButton.setTitleColor(.white, for: .normal)
+        addToCartButton.layer.cornerRadius = 5
+        addToCartButton.clipsToBounds = true
+        
+        NSLayoutConstraint.activate([
+            priceLabel.topAnchor.constraint(equalTo: productDescriptionLabel.bottomAnchor, constant: 16),
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            
+            priceValueLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 0),
+            priceValueLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            
+            addToCartButton.topAnchor.constraint(equalTo: productDescriptionLabel.bottomAnchor, constant: 16),
+            addToCartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            addToCartButton.heightAnchor.constraint(equalToConstant: 44),
+            addToCartButton.widthAnchor.constraint(equalToConstant: 170),
+            
+            priceValueLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+        ])
+    }
     
     @objc private func backButtonTapped() {
         print("yes")
