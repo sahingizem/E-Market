@@ -29,7 +29,14 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         hideBackButton()
         searchTextField.delegate = self
     }
+    
+    private func updateCartBadge() {
+        if let tabBarController = self.tabBarController as? TabBarController {
+            tabBarController.updateCartBadge()
+        }
+    }
 
+    
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -166,6 +173,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
         }
     }
     
+  
     private func loadData() {
            viewModel.fetchProducts { [weak self] result in
                DispatchQueue.main.async {
@@ -230,6 +238,7 @@ class ProductListController: UIViewController, UICollectionViewDataSource, UICol
            cell.addToCartAction = { [weak self] in
                self?.viewModel.addToCart(product: product)
                self?.showCartItemAddedAlert(for: product)
+               self?.updateCartBadge()
            }
         
          cell.favoriteAction = { [weak self] product in

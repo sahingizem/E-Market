@@ -10,9 +10,13 @@ import UIKit
 
 class TabBarController: UITabBarController {
 
+    private var cartTabBarItem: UITabBarItem?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        cartTabBarItem = tabBar.items?[1] 
+        updateCartBadge()
+
         tabBar.barTintColor = .black
         tabBar.isTranslucent = false
         view.backgroundColor = .white
@@ -36,5 +40,16 @@ class TabBarController: UITabBarController {
         account.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "Account"), selectedImage: UIImage(named: "fourth_icon_selected"))
         
         self.viewControllers = [productListNav, cartNav, favouritesNav, accountNav]
+        
+        cartTabBarItem = cart.tabBarItem
+              updateCartBadge()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateCartBadge), name: .cartUpdated, object: nil)
+
+    }
+    
+    @objc func updateCartBadge() {
+        let cartItemCount = CoreDataManager.shared.cartItems.count
+        cartTabBarItem?.badgeValue = cartItemCount > 0 ? "\(cartItemCount)" : nil
     }
 }

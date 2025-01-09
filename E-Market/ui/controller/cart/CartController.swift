@@ -76,7 +76,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadCartItems()
-
+        
         collectionView.reloadData()
         updateTotalPrice()
         
@@ -87,7 +87,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
         
         view.backgroundColor = .white
         collectionView.backgroundColor = .white
-
+        
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = Colors.primary
         view.addSubview(topView)
@@ -116,7 +116,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
         view.addSubview(priceSumLabel)
         
         view.addSubview(completeButton)
-
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 51),
             titleLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 16),
@@ -144,7 +144,7 @@ class CartController: UIViewController, UICollectionViewDataSource {
             priceSumLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             priceSumLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -17)
         ])
-                
+        
         NSLayoutConstraint.activate([
             completeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             completeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -156,13 +156,21 @@ class CartController: UIViewController, UICollectionViewDataSource {
     }
     
     @objc private func handleCartUpdate() {
-            collectionView.reloadData()
-            updateTotalPrice()
+        collectionView.reloadData()
+        updateTotalPrice()
+        updateBadgeCount()
+    }
+    
+    private func updateBadgeCount() {
+        let cartItemCount = viewModel.cartItems.count
+        if let tabBarItem = self.tabBarController?.tabBar.items?[1] {
+            tabBarItem.badgeValue = cartItemCount > 0 ? "\(cartItemCount)" : nil
         }
+    }
     
     private func updateTotalPrice() {
         let totalPrice = viewModel.calculateTotalPrice()
-               priceSumLabel.text = "\(totalPrice) ₺"
+        priceSumLabel.text = "\(totalPrice) ₺"
     }
     
     
@@ -184,16 +192,16 @@ class CartController: UIViewController, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CartCell", for: indexPath) as! CartCell
-           let cartItem = viewModel.cartItems[indexPath.item]
-           cell.configure(with: cartItem)
-           cell.quantityChanged = { [weak self] quantity in
-               if quantity == 0 {
-                   self?.viewModel.removeCartItem(at: indexPath.item)
-               } else {
-                   self?.viewModel.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
-               }
-               self?.updateTotalPrice()
-           }
-           return cell
-       }
+        let cartItem = viewModel.cartItems[indexPath.item]
+        cell.configure(with: cartItem)
+        cell.quantityChanged = { [weak self] quantity in
+            if quantity == 0 {
+                self?.viewModel.removeCartItem(at: indexPath.item)
+            } else {
+                self?.viewModel.updateCartItemQuantity(at: indexPath.item, quantity: quantity)
+            }
+            self?.updateTotalPrice()
+        }
+        return cell
+    }
 }
