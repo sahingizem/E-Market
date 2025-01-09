@@ -26,19 +26,19 @@ class AccountController: UIViewController, UITextFieldDelegate {
         loadSavedData()
         nameTextField.delegate = self
         surnameTextField.delegate = self
-
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-          dismissKeyboard()
-          return true
-      }
+        dismissKeyboard()
+        return true
+    }
     
     private func setupUI() {
         
         nameTextField.returnKeyType = .done
         surnameTextField.returnKeyType = .done
-
+        
         view.addSubview(topView)
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.backgroundColor = Colors.primary

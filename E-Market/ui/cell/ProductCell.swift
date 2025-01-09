@@ -20,30 +20,30 @@ class ProductCell: UICollectionViewCell {
     private let titleLabel = UILabel()
     private let addToCartButton = UIButton()
     private let favoriteButton = UIButton()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
         favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
-
+        
     }
     
     @objc private func addToCartButtonTapped() {
-            addToCartAction?()
-        }
+        addToCartAction?()
+    }
     @objc private func favoriteButtonTapped() {
-           favoriteButton.isSelected.toggle()
-           
-           if favoriteButton.isSelected {
-               favoriteButton.setImage(UIImage(named: "Star3"), for: .normal)
-           } else {
-               favoriteButton.setImage(UIImage(named: "Star2"), for: .normal)
-           }
+        favoriteButton.isSelected.toggle()
+        
+        if favoriteButton.isSelected {
+            favoriteButton.setImage(UIImage(named: "Star3"), for: .normal)
+        } else {
+            favoriteButton.setImage(UIImage(named: "Star2"), for: .normal)
+        }
         if let product = product {
-                  favoriteAction?(product)
-              }
-       }
+            favoriteAction?(product)
+        }
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -82,9 +82,9 @@ class ProductCell: UICollectionViewCell {
         layer.borderWidth = 1.0
         
         layer.shadowColor = UIColor.tertiary.cgColor
-                layer.shadowOffset = CGSize(width: 0, height: 2)
-                layer.shadowOpacity = 0.2
-                layer.shadowRadius = 4
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowOpacity = 0.2
+        layer.shadowRadius = 4
         
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
@@ -100,7 +100,7 @@ class ProductCell: UICollectionViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             
-         //   addToCartButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
+            //   addToCartButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
             addToCartButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             addToCartButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             addToCartButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
@@ -117,11 +117,11 @@ class ProductCell: UICollectionViewCell {
         self.product = product
         if let imageURL = URL(string: product.image) {
             print(imageURL)
-                  productImageView.loadImage(from: imageURL)
-              } else {
-                  productImageView.image = nil
-                  productImageView.backgroundColor = Colors.placeholder 
-              }
+            productImageView.loadImage(from: imageURL)
+        } else {
+            productImageView.image = nil
+            productImageView.backgroundColor = Colors.placeholder 
+        }
         titleLabel.text = product.name
         priceLabel.text = "$\(product.price)"
     }
@@ -132,7 +132,7 @@ class ProductCell: UICollectionViewCell {
         let buttonHeight: CGFloat = 36
         let titleLabelHeight = product.name.heightWithConstrainedWidth(width: UIScreen.main.bounds.width - 2 * padding, font: UIFont(name: "Verdana", size: 14)!)
         let priceLabelHeight: CGFloat = 17 // Assuming a constant price height->can be adjusted
-
+        
         return imageHeight + padding * 3 + priceLabelHeight + titleLabelHeight + buttonHeight
     }
 }

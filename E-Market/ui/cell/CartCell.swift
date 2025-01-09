@@ -17,7 +17,7 @@ class CartCell: UICollectionViewCell {
     private let itemNumberLabel = UILabel()
     
     var quantityChanged: ((Int) -> Void)?
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -46,11 +46,11 @@ class CartCell: UICollectionViewCell {
             productLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             productLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             productLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            
             priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             priceLabel.topAnchor.constraint(equalTo: productLabel.bottomAnchor, constant: 0),
             priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            
         ])
         
         minusButton.translatesAutoresizingMaskIntoConstraints = false
@@ -92,8 +92,8 @@ class CartCell: UICollectionViewCell {
             plusButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16) 
         ])
     }
-
-
+    
+    
     func configure(with cartItem: CartItem) {
         productLabel.text = cartItem.product.name
         priceLabel.text = "$\(cartItem.product.price)"
@@ -101,12 +101,12 @@ class CartCell: UICollectionViewCell {
     }
     
     @objc private func decreaseItemNumber() {
-          if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 0 {
-              let newValue = currentValue - 1
-              itemNumberLabel.text = "\(newValue)"
-              quantityChanged?(newValue)
-          }
-      }
+        if let currentValue = Int(itemNumberLabel.text ?? "0"), currentValue > 0 {
+            let newValue = currentValue - 1
+            itemNumberLabel.text = "\(newValue)"
+            quantityChanged?(newValue)
+        }
+    }
     @objc private func increaseItemNumber() {
         if let currentValue = Int(itemNumberLabel.text ?? "0") {
             let newValue = currentValue + 1
@@ -114,6 +114,6 @@ class CartCell: UICollectionViewCell {
             quantityChanged?(newValue)
         }
     }
-   }
+}
 
 

@@ -18,10 +18,10 @@ struct CartItem {
 }
 
 /*extension CartItem {
-    func toProductItem() -> ProductItem {
-        return ProductItem(product: self.product, quantity: self.quantity)
-    }
-}*/
+ func toProductItem() -> ProductItem {
+ return ProductItem(product: self.product, quantity: self.quantity)
+ }
+ }*/
 
 /*struct CartItem : Codable {
  let product: Product

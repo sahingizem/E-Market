@@ -110,7 +110,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         
         fetchBrands()
         self.tabBarController?.tabBar.isHidden = true
-
+        
     }
     
     private func fetchBrands() {
@@ -345,7 +345,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
         ])
         
         view.addSubview(applyButton)
-
+        
         NSLayoutConstraint.activate([
             applyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             applyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -353,7 +353,7 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
             applyButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         applyButton.addTarget(self, action: #selector(applyButtonTapped), for: .touchUpInside)
-
+        
         
     }
     @objc private func applyButtonTapped() {
@@ -361,11 +361,11 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
             let sortOption = self.selectedSortOption ?? "Old to new"
             let brand = self.selectedBrand
             let model = self.selectedModel
-                
+            
             self.navigateToProductList(sortOption: sortOption, brand: brand, model: model)
-              let productListController = ProductListController()
-              self.navigationController?.pushViewController(productListController, animated: true)
-          })
+            let productListController = ProductListController()
+            self.navigationController?.pushViewController(productListController, animated: true)
+        })
     }
     
     func navigateToProductList(sortOption: String, brand: String?, model: String?) {
@@ -379,15 +379,15 @@ class FilterController: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
-           sender.isSelected.toggle()
-           // unselect selected button(s) when another one gets selected by the user:
+        sender.isSelected.toggle()
+        // unselect selected button(s) when another one gets selected by the user:
         for button in roundButtons {
-               button.isSelected = false
-               button.setImage(UIImage(named: "unselectedButton"), for: .normal)
-           }
-        sender.isSelected = true
-            sender.setImage(UIImage(named: "selectedButton"), for: .normal)
+            button.isSelected = false
+            button.setImage(UIImage(named: "unselectedButton"), for: .normal)
         }
+        sender.isSelected = true
+        sender.setImage(UIImage(named: "selectedButton"), for: .normal)
+    }
     
     
     
@@ -429,10 +429,10 @@ extension FilterController {
         if tableView == brandTableView {
             let brand = viewModel.brands[indexPath.row]
             cell.textLabel?.text = brand
-                } else if tableView == modelTableView {
-                    cell.textLabel?.text = viewModel.models[indexPath.row]
-
-                }
+        } else if tableView == modelTableView {
+            cell.textLabel?.text = viewModel.models[indexPath.row]
+            
+        }
         
         
         let iconImageView = UIImageView()

@@ -55,16 +55,16 @@ class ProductDetailController: UIViewController {
     @objc private func addToCartButtonTapped() {
         print("Product added to cart: \(product.name)")
         viewModel.addToCart(product: product) { [weak self] success in
-              guard let self = self else { return }
-              
-              if success {
-                  self.showCartItemAddedAlert(for: self.product)
-              } else {
-                  let alert = UIAlertController(title: "Error", message: "There was an issue adding the product to the cart.", preferredStyle: .alert)
-                  alert.addAction(UIAlertAction(title: "OK", style: .default))
-                  self.present(alert, animated: true)
-              }
-          }
+            guard let self = self else { return }
+            
+            if success {
+                self.showCartItemAddedAlert(for: self.product)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "There was an issue adding the product to the cart.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
+        }
     }
     
     private func hideBackButton() {

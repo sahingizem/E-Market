@@ -11,7 +11,7 @@ class FilterViewModel {
     
     var brands: [String] = []
     var models: [String] = []
-
+    
     var products: [Product] = []
     
     var filteredProducts: [Product] = []

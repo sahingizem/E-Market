@@ -9,17 +9,17 @@ import Foundation
 
 class ProductDetailViewModel {
     
-/*
-    func addToCart(product: Product) {
-        CoreDataManager.shared.addItem(product)
-    }*/
+    /*
+     func addToCart(product: Product) {
+     CoreDataManager.shared.addItem(product)
+     }*/
     
     func addToCart(product: Product, completion: @escaping (Bool) -> Void) {
-         DispatchQueue.global().async {
-             let success = CoreDataManager.shared.addItem(product)
-             DispatchQueue.main.async {
-                 completion(success)
-             }
-         }
-     }
+        DispatchQueue.global().async {
+            let success = CoreDataManager.shared.addItem(product)
+            DispatchQueue.main.async {
+                completion(success)
+            }
+        }
+    }
 }

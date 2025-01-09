@@ -13,25 +13,25 @@ class FavouritesController: UIViewController, UICollectionViewDataSource, UIColl
     private let topView = UIView()
     private let titleLabel = UILabel()
     private let infoLabel = UILabel()
-
+    
     private var viewModel = FavouritesViewModel()
-
+    
     private var collectionView: UICollectionView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupUI()
         viewModel.onFavoritesUpdated = { [weak self] in
-                  self?.collectionView.reloadData()
-              }
+            self?.collectionView.reloadData()
+        }
     }
     
     func updateFavorites(with products: [Product]) {
         viewModel.updateFavorites(with: products)
     }
     
-   private func setupUI() {
+    private func setupUI() {
         view.backgroundColor = .white
         
         topView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,49 +71,49 @@ class FavouritesController: UIViewController, UICollectionViewDataSource, UIColl
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
         
-     
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: topView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-       setupInfoLabel()
-
+        setupInfoLabel()
+        
     }
-
+    
     private func setupInfoLabel() {
-           infoLabel.translatesAutoresizingMaskIntoConstraints = false
-           infoLabel.font = UIFont(name: "Arial", size: 18)
-           infoLabel.text = "You will see your favorite products here in a future update. The app will be updated soon!"
-           infoLabel.textColor = .gray
-           infoLabel.textAlignment = .center
-           infoLabel.numberOfLines = 0
-           infoLabel.alpha = 0.7
-
-           view.addSubview(infoLabel)
-
-           NSLayoutConstraint.activate([
-               infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-               infoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-               infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-               infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-           ])
-       }
-       
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.font = UIFont(name: "Arial", size: 18)
+        infoLabel.text = "You will see your favorite products here in a future update. The app will be updated soon!"
+        infoLabel.textColor = .gray
+        infoLabel.textAlignment = .center
+        infoLabel.numberOfLines = 0
+        infoLabel.alpha = 0.7
+        
+        view.addSubview(infoLabel)
+        
+        NSLayoutConstraint.activate([
+            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.favoriteProducts.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath) as! ProductCell
         let product = viewModel.favoriteProducts[indexPath.row]
         cell.configure(with: product)
         return cell
     }
-
-
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //selection will be handled later
     }

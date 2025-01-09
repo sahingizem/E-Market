@@ -13,7 +13,7 @@ class ProductListViewModel {
     private let coreDataManager = CoreDataManager.shared
     
     var products: [Product] = []
-     var searchFilteredProducts : [Product] = []
+    var searchFilteredProducts : [Product] = []
     private var favoriteProducts = [Product]()
     
     var filteredProducts: [Product] = []
@@ -55,22 +55,22 @@ class ProductListViewModel {
     }
     
     func toggleFavorite(for product: Product) -> Product {
-           if let index = products.firstIndex(where: { $0.id == product.id }) {
-               var updatedProduct = products[index]
-               updatedProduct.isFavourite?.toggle() 
-               products[index] = updatedProduct
-               return updatedProduct
-           }
-           return product
-       }
+        if let index = products.firstIndex(where: { $0.id == product.id }) {
+            var updatedProduct = products[index]
+            updatedProduct.isFavourite?.toggle() 
+            products[index] = updatedProduct
+            return updatedProduct
+        }
+        return product
+    }
     
     /*func toggleFavorite(for product: Product) {
-        if let index = favoriteProducts.firstIndex(where: { $0.id == product.id }) {
-            favoriteProducts.remove(at: index)
-        } else {
-            favoriteProducts.append(product)
-        }
-    }*/
+     if let index = favoriteProducts.firstIndex(where: { $0.id == product.id }) {
+     favoriteProducts.remove(at: index)
+     } else {
+     favoriteProducts.append(product)
+     }
+     }*/
     
     func getFavorites() -> [Product] {
         return favoriteProducts
@@ -87,10 +87,10 @@ class ProductListViewModel {
         }
     }
     
-     func filterProducts(by criterion: String) {
+    func filterProducts(by criterion: String) {
         searchFilteredProducts = products.filter { product in
             return product.brand.lowercased().contains(criterion.lowercased()) ||
-                   product.model.lowercased().contains(criterion.lowercased())
+            product.model.lowercased().contains(criterion.lowercased())
         }
     }
 }
