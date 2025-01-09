@@ -53,16 +53,16 @@ class AccountController: UIViewController, UITextFieldDelegate {
         nameTextField.placeholder = "Name"
         nameTextField.font = UIFont(name: "Verdana", size: 18)
         nameTextField.borderStyle = .roundedRect
-        nameTextField.textColor = .white
-        nameTextField.backgroundColor = Colors.tertiary2
+        nameTextField.textColor = .primary
+        nameTextField.backgroundColor = Colors.secondary
         view.addSubview(nameTextField)
         
         surnameTextField.translatesAutoresizingMaskIntoConstraints = false
         surnameTextField.placeholder = "Surname"
         surnameTextField.font = UIFont(name: "Verdana", size: 18)
         surnameTextField.borderStyle = .roundedRect
-        surnameTextField.textColor = .white
-        surnameTextField.backgroundColor = Colors.tertiary2
+        surnameTextField.textColor = .primary
+        surnameTextField.backgroundColor = Colors.secondary
         view.addSubview(surnameTextField)
         
         favouritesButton.translatesAutoresizingMaskIntoConstraints = false
